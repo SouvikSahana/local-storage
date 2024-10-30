@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete_forever" />
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .container{
+            display: flex;
+            flex-direction: row;
+        }
+        .nameContainer{
+            width: 400px;
+            background-color: rgb(190, 190, 219);
+            margin: 5px;
+            padding: 7px;
+            border-radius: 7px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .videoContainer{
+            flex: 1;
+            /* width: 100%; */
+            height: auto;          
+            /* overflow: hidden;  */
+            /* height: 88vh; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(214, 188, 214);
+            border-radius: 7px;
+            padding: 7px;
+        }
+        .video{
+            width: 100%;        /* Limits width to container width */
+            max-height: 100%;       /* Limits height to container height */
+            object-fit: contain;   
+            border-radius: 5px;
+        }   
+        @media screen and (max-width: 1250px){
+            .container{
+                flex-direction: column;
+            }
+            .nameContainer{
+                width: 98%;
+            }
+        }
+        .material-symbols-outlined {
+            color: white;
+            padding:5px;
+            border-radius: 50%;
+            background-color: rgb(231, 82, 82);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="videoContainer">
+            <video src="/media/" autoplay controls  id="video" class="video"></video>
+        </div>
+        <div class="nameContainer">
+            <h1 id="name">Video Streaminng</h1>
+            <span class="material-symbols-outlined" onclick="handleDelete()">
+                delete_forever
+                </span>
+        </div>
+    </div>
+    
+
+    <script>
+
+            const video=document.getElementById('video')
+        const name=document.getElementById('name')
+
+        const queryParams = new URLSearchParams(window.location.search);
+        const videoID= queryParams.get('id');
+        const videoName= queryParams.get('name')
+    
+        video.src=`/media/${videoID}`
+        video.play()
+        name.textContent= videoName
+        
+        const handleDelete=async()=>{
+            try{
+                await fetch('/media/'+videoID,{
+                method:'delete'
+            })
+            window.location.href = '/';
+            }catch(error){
+                console.log(error)
+            }
+            
+        }
+        
+    </script>
+</body>
+</html>
